@@ -1,114 +1,12 @@
-<!doctype html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>لوحة التحكم | مذاق مكناس</title>
-<link rel="stylesheet" href="dashboard.css">
-</head>
-<body>
-<div class="login" id="login">
-  <div class="loginBox">
-    <div class="brand">🌿 مذاق مكناس</div>
-    <h1>لوحة التحكم</h1>
-    <p>نسخة تجريبية محلية لإدارة المنتجات والطلبات والمحتوى.</p>
-    <input id="pin" type="password" placeholder="رمز الدخول التجريبي">
-    <button onclick="login()">دخول</button>
-    <small>الرمز التجريبي: 1234 — يجب استبداله بنظام Authentication حقيقي قبل الإنتاج.</small>
-  </div>
-</div>
-
-<div class="app" id="app">
-<aside class="side">
-  <div class="brand">🌿 مذاق مكناس</div>
-  <nav>
-    <button class="active" data-view="overview">📊 الرئيسية</button>
-    <button data-view="products">🫒 المنتجات</button>
-    <button data-view="orders">📦 الطلبات</button>
-    <button data-view="customers">👥 الزبناء</button>
-    <button data-view="content">✍️ المحتوى وSEO</button>
-    <button data-view="settings">⚙️ الإعدادات</button>
-  </nav>
-  <a href="/darija/" class="store">↗ فتح المتجر</a>
-</aside>
-
-<main class="main">
-<header>
-  <div>
-    <button class="mobileMenu" onclick="toggleSide()">☰</button>
-    <span class="eyebrow">ADMIN DASHBOARD</span>
-    <h1 id="viewTitle">نظرة عامة</h1>
-  </div>
-  <div class="headerActions"><span class="status">● المتجر يعمل</span><button onclick="logout()">خروج</button></div>
-</header>
-
-<section id="overview" class="view active">
-  <div class="cards">
-    <div class="stat"><span>المبيعات</span><b id="sales">0 DH</b><small>من الطلبات المسجلة</small></div>
-    <div class="stat"><span>الطلبات</span><b id="ordersCount">0</b><small>كل الطلبات</small></div>
-    <div class="stat"><span>المنتجات</span><b id="productsCount">0</b><small>نشطة في الكتالوج</small></div>
-    <div class="stat"><span>السلة</span><b id="cartCount">0</b><small>عناصر محفوظة محلياً</small></div>
-  </div>
-  <div class="grid2">
-    <div class="panel"><div class="panelHead"><h2>آخر الطلبات</h2><button onclick="showView('orders')">عرض الكل</button></div><div id="recentOrders"></div></div>
-    <div class="panel"><div class="panelHead"><h2>صحة المتجر</h2></div>
-      <div class="health"><div><span>SEO الأساسي</span><b>✓</b></div><div><span>نسخة الفرنسية</span><b>✓</b></div><div><span>سلة المشتريات</span><b>✓</b></div><div><span>Authentication</span><b class="warn">تجريبي</b></div><div><span>قاعدة البيانات</span><b class="warn">LocalStorage</b></div></div>
-    </div>
-  </div>
-</section>
-
-<section id="products" class="view">
-  <div class="toolbar"><div><h2>إدارة المنتجات</h2><p>أضف، عدّل، عطّل أو احذف المنتجات.</p></div><button class="primary" onclick="openProduct()">+ منتج جديد</button></div>
-  <div class="tableWrap"><table><thead><tr><th>المنتج</th><th>الفئة</th><th>السعر</th><th>المخزون</th><th>الحالة</th><th>إجراءات</th></tr></thead><tbody id="productsTable"></tbody></table></div>
-</section>
-
-<section id="orders" class="view">
-  <div class="toolbar"><div><h2>الطلبات</h2><p>تتبع حالة كل طلب.</p></div><button onclick="seedOrder()">+ طلب تجريبي</button></div>
-  <div class="tableWrap"><table><thead><tr><th>رقم</th><th>الزبون</th><th>المدينة</th><th>المجموع</th><th>الحالة</th><th>التاريخ</th><th>إجراء</th></tr></thead><tbody id="ordersTable"></tbody></table></div>
-</section>
-
-<section id="customers" class="view">
-  <div class="toolbar"><div><h2>الزبناء</h2><p>ملخص العملاء المستخرج من الطلبات.</p></div></div>
-  <div class="tableWrap"><table><thead><tr><th>الاسم</th><th>الهاتف</th><th>المدينة</th><th>عدد الطلبات</th><th>المجموع</th></tr></thead><tbody id="customersTable"></tbody></table></div>
-</section>
-
-<section id="content" class="view">
-  <div class="toolbar"><div><h2>المحتوى وSEO</h2><p>إدارة النصوص التي تؤثر على الثقة والظهور في البحث.</p></div><button class="primary" onclick="saveSEO()">حفظ</button></div>
-  <div class="panel formGrid">
-    <label>عنوان الصفحة بالدارجة<input id="seoTitle" value="مذاق مكناس | منتوجات تراثية من مكناس"></label>
-    <label>Meta Description<textarea id="seoDesc">منتوجات مكناس التراثية: الزيتون، زيت الزيتون، الفلفل الحار، المخمرات والخليع، بمصدر واضح وتجربة شراء بسيطة.</textarea></label>
-    <label>عنوان الصفحة بالفرنسية<input id="seoTitleFr" value="Goût de Meknès | Produits du terroir marocain"></label>
-    <label>Meta Description FR<textarea id="seoDescFr">Découvrez les produits du terroir de Meknès : olives, huile d’olive, piments et préparations traditionnelles.</textarea></label>
-    <label>كلمات أساسية<input id="keywords" value="زيتون مكناس, زيت الزيتون مكناس, منتوجات مكناس, terroir Meknès"></label>
-    <label>وصف قصير للثقة<textarea id="trustText">مصدر واضح، صور حقيقية، تواصل مباشر، وتفاصيل المنتج قبل الشراء.</textarea></label>
-  </div>
-</section>
-
-<section id="settings" class="view">
-  <div class="toolbar"><div><h2>الإعدادات</h2><p>بيانات المتجر والطلب.</p></div><button class="primary" onclick="saveSettings()">حفظ</button></div>
-  <div class="panel formGrid">
-    <label>اسم المتجر<input id="shopName" value="مذاق مكناس"></label>
-    <label>WhatsApp<input id="whatsapp" value="212600000000"></label>
-    <label>Instagram<input id="instagram" value="@mzaqmeknes"></label>
-    <label>المدينة<input id="city" value="Meknès, Morocco"></label>
-    <label>رسالة الطلب<input id="orderPrefix" value="سلام، بغيت نطلب من متجر مذاق مكناس 🌿"></label>
-  </div>
-  <div class="warningBox">⚠️ هذه النسخة تستعمل LocalStorage. قبل استقبال طلبات حقيقية، يجب نقل المنتجات والطلبات والمستخدمين إلى Firebase/Firestore وإضافة Firebase Authentication وقواعد Firestore آمنة.</div>
-</section>
-</main>
-</div>
-
-<div class="modal" id="productModal"><div class="modalBox">
-<button class="x" onclick="closeProduct()">×</button><h2 id="modalTitle">منتج جديد</h2>
-<input type="hidden" id="pid">
-<label>اسم المنتج<input id="pname"></label>
-<label>الاسم الفرنسي<input id="pfr"></label>
-<label>الفئة<select id="pcat"><option value="olives">الزيتون</option><option value="oil">زيت الزيتون</option><option value="pepper">الفلفل</option><option value="traditional">تراثي</option></select></label>
-<label>السعر<input id="pprice" type="number"></label>
-<label>الوحدة<input id="punit" value="500g"></label>
-<label>المخزون<input id="pstock" type="number" value="20"></label>
-<label>الصورة URL<input id="pimg"></label>
-<label>الوصف<textarea id="pdesc"></textarea></label>
-<div class="modalActions"><button onclick="closeProduct()">إلغاء</button><button class="primary" onclick="saveProduct()">حفظ المنتج</button></div>
-</div></div>
-<script src="dashboard.js"></script>
-</body></html>
+<!doctype html><html lang="fr" dir="ltr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Goût de Meknès | Produits du terroir marocain</title><meta name="description" content="منتوجات مكناس الTraditionnelة: Olives، زيت Olives، Piments الحار، المخمرات والخليع. مصدر واضح وتجربة شراء بسيطة."><link rel="canonical" href="https://YOUR-DOMAIN.vercel.app/fr/"><link rel="alternate" hreflang="ar-MA" href="https://YOUR-DOMAIN.vercel.app/darija/"><link rel="alternate" hreflang="fr-MA" href="https://YOUR-DOMAIN.vercel.app/fr/"><link rel="stylesheet" href="../style.css"><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"مذاق مكناس","url":"https://YOUR-DOMAIN.vercel.app/darija/","areaServed":"MA"}</script></head><body><div class="top">🌿 Produits sélectionnés • origine claire • livraison au Maroc</div><header class="header"><a class="logo" href="#home"><span>🌿</span> مذاق مكناس</a><nav class="nav" id="nav"><a href="#home">Accueil</a><a href="#story">Notre histoire</a><a href="#source">Source</a><a href="#products">Produits</a><a href="#knowledge">Conseils</a><a href="#faq">FAQ</a><a href="#contact">Contact</a></nav><div class="actions"><a class="lang" href="../darija/">AR</a><button id="cartBtn" class="cart">🛒<span id="count" class="count">0</span></button><button id="menuBtn" class="menu">☰</button></div></header><main>
+<section class="hero" id="home"><div><span class="kicker">من مكناس • من Source • حتى دارك</span><h1>مذاق مكناس<br><em>comme il se doit.</em></h1><p>Des produits du terroir soigneusement sélectionnés, avec une origine et une histoire claires : olives, huile d’olive, piments, préparations traditionnelles et khlii.</p><div class="heroBtns"><a class="btn primary" href="#products">شوف Produits ←</a><a class="btn ghost" href="#source">Voir notre source ↓</a></div><div class="trust"><div><b>100%</b><small>Informations claires</small></div><div><b>🇲🇦</b><small>Tradition marocaine</small></div><div><b>01</b><small>Une histoire par produit</small></div></div></div><div class="heroImg"><img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=1000&q=85" alt="زيت Olives ومنتوجات Traditionnelة"><div class="badge">🌿 <b>من Source</b><br>شفافية قبل البيع</div><div class="stamp">Meknès<br>Terroir</div></div></section>
+<div class="marquee"><div class="track"><span>زيتون مكناس</span><i>✦</i><span>زيت Olives</span><i>✦</i><span>Piments الحار</span><i>✦</i><span>المخمرات</span><i>✦</i><span>الخليع</span><i>✦</i><span>منتوجات التراث</span><i>✦</i><span>زيتون مكناس</span></div></div>
+<section id="story"><div class="head"><span class="kicker">01 — Notre histoire؟</span><h2>Nous ne voulons pas seulement<br><em>vous vendre un produit.</em></h2><p>Nous voulons que vous sachiez ce que vous achetez, d’où il vient et pourquoi nous l’avons choisi.</p></div><div class="storyGrid"><article class="card big"><div><span class="icon">🌱</span><h3>نعرفو Source</h3><p>كنحاولو نربطو كل منتوج بSource ديالو ونوضحوا طريقة التحضير والمكونات حسب المعلومات الحقيقية المتوفرة.</p></div></article><article class="card"><span class="icon">🫒</span><h3>La tradition avant les tendances</h3><p>كنعطيو قيمة للطرق التقليدية والذوق اللي تربينا عليه.</p></article><article class="card"><span class="icon">🔎</span><h3>Dire les choses telles qu’elles sont</h3><p>ما غاديش نعممو ادعاءات صحية أو طبيعية بلا أساس. الوضوح هو أساس الثقة.</p></article><article class="card wide"><div><span class="icon">🤝</span><h3>Nous voulons une relation durable</h3><p>الهدف أنك تجرب، تثق، وترجع لنا لأن التجربة كانت فعلاً في المستوى.</p></div></article></div></section>
+<section class="source" id="source"><img src="https://images.unsplash.com/photo-1507592376875-6b7d7f5a6e7c?auto=format&fit=crop&w=1000&q=85" alt="أشجار Olives"><div><span class="kicker" style="color:#9fc49b">02 — D’où viennent-ils ?</span><h2>Chaque produit a<br><em>une histoire et une origine.</em></h2><p>Notre boutique ne vous demande pas une confiance aveugle. Nous montrons autant que possible le parcours du produit avant son arrivée chez vous.</p><div class="journey"><div><b>01 — Source</b><small>الفلاح / المنتج / المعصرة</small></div><div><b>02 — التحضير</b><small>طريقة ومكونات واضحة</small></div><div><b>03 — التعبئة</b><small>تغليف مناسب</small></div><div><b>04 — التوصيل</b><small>حتى باب دارك</small></div></div></div></section>
+<section class="products" id="products"><div class="head"><span class="kicker">03 — Nos produits</span><h2>Des produits du <em>التراث</em><br>pour votre table.</h2><p>Choisissez un produit, ajoutez la quantité au panier puis finalisez la commande via WhatsApp. Les prix sont indicatifs dans cette démo.</p></div><div class="filters"><button class="filter active" data-filter="all">Tous</button><button class="filter" data-filter="olives">Olives</button><button class="filter" data-filter="oil">زيت Olives</button><button class="filter" data-filter="pepper">Piments</button><button class="filter" data-filter="traditional">Traditionnel</button></div><div class="grid" id="productGrid"></div></section>
+<section class="knowledge" id="knowledge"><div><span class="kicker">04 — Conseils</span><div class="head"><h2>Avant d’acheter,<br><em>comprenez ce que vous achetez.</em></h2><p>فيديوهات قصيرة على Source، طريقة الحفظ، اختيار زيت Olives والمعلومات المهمة قبل الشراء.</p></div></div><div class="videoGrid"><article class="video big"><div class="vid"><div class="play">▶</div></div><h3>من Olivesة حتى زيت Olives</h3><p>كيفاش كيدوز المسار من الثمرة حتى القنينة؟</p></article><article class="video"><div class="vid"><div class="play">▶</div></div><h3>كيفاش نحافظو على Olives؟</h3><p>نصائح عملية للحفظ.</p></article><article class="video"><div class="vid"><div class="play">▶</div></div><h3>كيف نختارو زيت Olives؟</h3><p>أشياء مهمة قبل ما تشري.</p></article></div></section>
+<section id="faq"><div class="head"><span class="kicker">05 — FAQ</span><h2>Toutes vos questions,<br><em>des réponses claires.</em></h2></div><div class="faqList"><details open><summary>منين كيجيو Produits؟ <span>+</span></summary><p>كنخدمو على مصادر واضحة داخل منطقة مكناس والمناطق المغربية المعروفة بالمنتوج، وغادي نذكر مصدر كل منتوج عندما تكون المعلومة متوفرة وقابلة للتحقق.</p></details><details><summary>واش Produits فيها مواد حافظة؟ <span>+</span></summary><p>كل منتوج خاصو يتوصف حسب تركيبته الحقيقية. ما غاديش نعممو "بلا مواد حافظة" إلا كان ذلك مثبتاً لكل منتوج.</p></details><details><summary>واش نقدر نخلص عند الاستلام؟ <span>+</span></summary><p>يمكن تفعيل Paiement à la livraison حسب شركة التوصيل.</p></details><details><summary>واش كتوصّلو لجميع المغرب؟ <span>+</span></summary><p>هذا النموذج مهيأ للتوصيل لجميع المدن، وسيتم تحديد التكلفة والمدة حسب Ville وشركة الشحن.</p></details><details><summary>كيفاش نعرف أن المنتوج هو نفسه اللي شفت فالموقع؟ <span>+</span></summary><p>النسخة النهائية ستعتمد على صور وفيديوهات حقيقية للمنتوج والتغليف وSource.</p></details></div></section>
+<div class="trustBand"><div><span class="kicker" style="color:#a9ca9b">La confiance n’est pas un slogan</span><h2>ورّينا Source،<br>et laissez le produit parler.</h2></div><div class="points"><span>✓ Informations claires</span><span>✓ صور حقيقية</span><span>✓ Contact مباشر</span><span>✓ توصيل واضح</span></div></div>
+<section class="contact" id="contact"><div><span class="kicker">06 — Contact</span><div class="head"><h2>Une question ?<br><em>Parlez-nous.</em></h2><p>WhatsApp وInstagram والخريطة خاصهم يكونو واضحين باش الزبون يحس بالثقة قبل وبعد الطلب.</p></div><div class="links"><a href="https://wa.me/212600000000" target="_blank">💬 WhatsApp<small>Contactez-nous directement</small></a><a href="#">📸 Instagram<small>@mzaqmeknes</small></a></div></div><div class="map"><div class="pin">📍</div><div class="mapLabel"><b>مكناس، المغرب</b><small>Emplacement de démonstration — à remplacer avant publication</small></div></div></section></main>
+<footer><div class="footerGrid"><div><a class="logo" href="#home"><span>🌿</span> مذاق مكناس</a><p>منتوجات Traditionnelة من مكناس والمغرب، بقصة واضحة وتجربة شراء بسيطة.</p></div><div><h4>المتجر</h4><a href="#products">Produits</a><a href="#source">Source</a><a href="#faq">FAQ</a></div><div><h4>Aide</h4><a href="#">التوصيل</a><a href="#">الاسترجاع</a><a href="#">الشروط</a></div><div><h4>Suivez-nous</h4><a href="#">Instagram</a><a href="https://wa.me/212600000000">WhatsApp</a></div></div><div class="bottom"><span>© 2026 مذاق مكناس</span><span>Fait avec amour au Maroc 🇲🇦</span></div></footer><button class="floatWA" onclick="wa()">☏</button>
+<aside class="drawer" id="drawer"><div class="cartHead"><h3>Panier 🛒</h3><button id="closeCart">×</button></div><div class="cartItems" id="cartItems"></div><div class="cartFoot"><div class="total"><span>Total</span><b id="total">0 DH</b></div><button class="btn primary" id="checkout">Passer la commande</button></div></aside><div class="overlay" id="overlay"></div><div class="modal" id="modal"><div class="modalCard"><button class="close" id="closeModal">×</button><span class="kicker">Dernière étape</span><h2>Où livrer ?</h2><form id="orderForm"><label>Nom complet<input required name="name"></label><label>Téléphone<input required name="phone" type="tel"></label><label>Ville<input required name="city" value="مكناس"></label><label>Adresse<textarea required name="address"></textarea></label><label>Mode de paiement<select name="payment"><option>Paiement à la livraison</option><option>Virement bancaire</option><option>دفع إلكتروني — يربط لاحقاً</option></select></label><button class="btn primary" type="submit">Confirmer via WhatsApp</button></form></div></div><script src="../script.js"></script></body></html>
