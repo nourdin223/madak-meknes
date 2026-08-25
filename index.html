@@ -1,1 +1,114 @@
-<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=/darija/"><meta name="viewport" content="width=device-width"><title>مذاق مكناس</title></head><body><a href="/darija/">الدخول</a></body></html>
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>لوحة التحكم | مذاق مكناس</title>
+<link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+<div class="login" id="login">
+  <div class="loginBox">
+    <div class="brand">🌿 مذاق مكناس</div>
+    <h1>لوحة التحكم</h1>
+    <p>نسخة تجريبية محلية لإدارة المنتجات والطلبات والمحتوى.</p>
+    <input id="pin" type="password" placeholder="رمز الدخول التجريبي">
+    <button onclick="login()">دخول</button>
+    <small>الرمز التجريبي: 1234 — يجب استبداله بنظام Authentication حقيقي قبل الإنتاج.</small>
+  </div>
+</div>
+
+<div class="app" id="app">
+<aside class="side">
+  <div class="brand">🌿 مذاق مكناس</div>
+  <nav>
+    <button class="active" data-view="overview">📊 الرئيسية</button>
+    <button data-view="products">🫒 المنتجات</button>
+    <button data-view="orders">📦 الطلبات</button>
+    <button data-view="customers">👥 الزبناء</button>
+    <button data-view="content">✍️ المحتوى وSEO</button>
+    <button data-view="settings">⚙️ الإعدادات</button>
+  </nav>
+  <a href="/darija/" class="store">↗ فتح المتجر</a>
+</aside>
+
+<main class="main">
+<header>
+  <div>
+    <button class="mobileMenu" onclick="toggleSide()">☰</button>
+    <span class="eyebrow">ADMIN DASHBOARD</span>
+    <h1 id="viewTitle">نظرة عامة</h1>
+  </div>
+  <div class="headerActions"><span class="status">● المتجر يعمل</span><button onclick="logout()">خروج</button></div>
+</header>
+
+<section id="overview" class="view active">
+  <div class="cards">
+    <div class="stat"><span>المبيعات</span><b id="sales">0 DH</b><small>من الطلبات المسجلة</small></div>
+    <div class="stat"><span>الطلبات</span><b id="ordersCount">0</b><small>كل الطلبات</small></div>
+    <div class="stat"><span>المنتجات</span><b id="productsCount">0</b><small>نشطة في الكتالوج</small></div>
+    <div class="stat"><span>السلة</span><b id="cartCount">0</b><small>عناصر محفوظة محلياً</small></div>
+  </div>
+  <div class="grid2">
+    <div class="panel"><div class="panelHead"><h2>آخر الطلبات</h2><button onclick="showView('orders')">عرض الكل</button></div><div id="recentOrders"></div></div>
+    <div class="panel"><div class="panelHead"><h2>صحة المتجر</h2></div>
+      <div class="health"><div><span>SEO الأساسي</span><b>✓</b></div><div><span>نسخة الفرنسية</span><b>✓</b></div><div><span>سلة المشتريات</span><b>✓</b></div><div><span>Authentication</span><b class="warn">تجريبي</b></div><div><span>قاعدة البيانات</span><b class="warn">LocalStorage</b></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="products" class="view">
+  <div class="toolbar"><div><h2>إدارة المنتجات</h2><p>أضف، عدّل، عطّل أو احذف المنتجات.</p></div><button class="primary" onclick="openProduct()">+ منتج جديد</button></div>
+  <div class="tableWrap"><table><thead><tr><th>المنتج</th><th>الفئة</th><th>السعر</th><th>المخزون</th><th>الحالة</th><th>إجراءات</th></tr></thead><tbody id="productsTable"></tbody></table></div>
+</section>
+
+<section id="orders" class="view">
+  <div class="toolbar"><div><h2>الطلبات</h2><p>تتبع حالة كل طلب.</p></div><button onclick="seedOrder()">+ طلب تجريبي</button></div>
+  <div class="tableWrap"><table><thead><tr><th>رقم</th><th>الزبون</th><th>المدينة</th><th>المجموع</th><th>الحالة</th><th>التاريخ</th><th>إجراء</th></tr></thead><tbody id="ordersTable"></tbody></table></div>
+</section>
+
+<section id="customers" class="view">
+  <div class="toolbar"><div><h2>الزبناء</h2><p>ملخص العملاء المستخرج من الطلبات.</p></div></div>
+  <div class="tableWrap"><table><thead><tr><th>الاسم</th><th>الهاتف</th><th>المدينة</th><th>عدد الطلبات</th><th>المجموع</th></tr></thead><tbody id="customersTable"></tbody></table></div>
+</section>
+
+<section id="content" class="view">
+  <div class="toolbar"><div><h2>المحتوى وSEO</h2><p>إدارة النصوص التي تؤثر على الثقة والظهور في البحث.</p></div><button class="primary" onclick="saveSEO()">حفظ</button></div>
+  <div class="panel formGrid">
+    <label>عنوان الصفحة بالدارجة<input id="seoTitle" value="مذاق مكناس | منتوجات تراثية من مكناس"></label>
+    <label>Meta Description<textarea id="seoDesc">منتوجات مكناس التراثية: الزيتون، زيت الزيتون، الفلفل الحار، المخمرات والخليع، بمصدر واضح وتجربة شراء بسيطة.</textarea></label>
+    <label>عنوان الصفحة بالفرنسية<input id="seoTitleFr" value="Goût de Meknès | Produits du terroir marocain"></label>
+    <label>Meta Description FR<textarea id="seoDescFr">Découvrez les produits du terroir de Meknès : olives, huile d’olive, piments et préparations traditionnelles.</textarea></label>
+    <label>كلمات أساسية<input id="keywords" value="زيتون مكناس, زيت الزيتون مكناس, منتوجات مكناس, terroir Meknès"></label>
+    <label>وصف قصير للثقة<textarea id="trustText">مصدر واضح، صور حقيقية، تواصل مباشر، وتفاصيل المنتج قبل الشراء.</textarea></label>
+  </div>
+</section>
+
+<section id="settings" class="view">
+  <div class="toolbar"><div><h2>الإعدادات</h2><p>بيانات المتجر والطلب.</p></div><button class="primary" onclick="saveSettings()">حفظ</button></div>
+  <div class="panel formGrid">
+    <label>اسم المتجر<input id="shopName" value="مذاق مكناس"></label>
+    <label>WhatsApp<input id="whatsapp" value="212600000000"></label>
+    <label>Instagram<input id="instagram" value="@mzaqmeknes"></label>
+    <label>المدينة<input id="city" value="Meknès, Morocco"></label>
+    <label>رسالة الطلب<input id="orderPrefix" value="سلام، بغيت نطلب من متجر مذاق مكناس 🌿"></label>
+  </div>
+  <div class="warningBox">⚠️ هذه النسخة تستعمل LocalStorage. قبل استقبال طلبات حقيقية، يجب نقل المنتجات والطلبات والمستخدمين إلى Firebase/Firestore وإضافة Firebase Authentication وقواعد Firestore آمنة.</div>
+</section>
+</main>
+</div>
+
+<div class="modal" id="productModal"><div class="modalBox">
+<button class="x" onclick="closeProduct()">×</button><h2 id="modalTitle">منتج جديد</h2>
+<input type="hidden" id="pid">
+<label>اسم المنتج<input id="pname"></label>
+<label>الاسم الفرنسي<input id="pfr"></label>
+<label>الفئة<select id="pcat"><option value="olives">الزيتون</option><option value="oil">زيت الزيتون</option><option value="pepper">الفلفل</option><option value="traditional">تراثي</option></select></label>
+<label>السعر<input id="pprice" type="number"></label>
+<label>الوحدة<input id="punit" value="500g"></label>
+<label>المخزون<input id="pstock" type="number" value="20"></label>
+<label>الصورة URL<input id="pimg"></label>
+<label>الوصف<textarea id="pdesc"></textarea></label>
+<div class="modalActions"><button onclick="closeProduct()">إلغاء</button><button class="primary" onclick="saveProduct()">حفظ المنتج</button></div>
+</div></div>
+<script src="dashboard.js"></script>
+</body></html>
